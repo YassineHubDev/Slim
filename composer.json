@@ -1,0 +1,14 @@
+{
+    "name": "yassine/slim0619",
+    "description": "Projet PHP utilisant le MicroFramework slim en version 3",
+    "type": "project",
+    "authors": [
+        {
+            "name": "yassine",
+            "email": "y.aabidouche@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.12"
+    }
+}
