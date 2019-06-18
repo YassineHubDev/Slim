@@ -1,66 +1,32 @@
 <?php
 
+use App\Controller\APIController;
+use App\Controller\HomeController;
 use App\Controller\ProductController;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 
-$app->get('/homepage', function (ServerRequestInterface $request, ResponseInterface $response) {
-    $response = $response->getBody()->write('<h1>Bonjour</h1>');
-    return $response;
-});
-
-$app->get('/contact', function (ServerRequestInterface $request, ResponseInterface $response) {
-    $response = $response->getBody()->write('<h1>Contact 2</h1>');
-    return $response;
-});
+// Création de pages de base
+$app->get('/', HomeController::class . ':home');
+$app->get('/contact', HomeController::class . ':contact');
 
 
-$app->get('/hamac', function (ServerRequestInterface $request, Response $response) {
-    //Création des données
-    $hamac = [
-        "name" => "Hamac",
-        "description" => "Pour dormir APRES slim (pas pendant...;))"
-    ];
-    //On met les données dans la réponse (en précisant que ce doit être du JSON)
-    $response = $response->withJson($hamac);
-    //On retourne la réponse au navigateur
-    return $response;
-});
+// Renvoi d'un JSON
+$app->get('/hamac', APIController::class . ':hamac');
 
+// Création d'un groupe de routes gérants les produits
 $app->group('/produit', function () {
-    //Page de la liste des produits
+
+    // Page de la liste des produits
     $this->get('/liste', ProductController::class . ':liste');
-    //Création d'une route possédant une variable
+
+    // Création d'une route possédant une variable
     $this->get('/{id:\d+}', ProductController::class . ':show');
 
-    //Page de modification des produits
-    //todo : créer route et méthode de contrôleur
+    // Page de modification des produits
+    // todo : créer route et méthode de contrôleur
 
-
-
-
-
-
-
-
-
-
-
-    //Page de supression des produits
+    // Page de suppression des produits
     // todo : créer route et méthode de contrôleur
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

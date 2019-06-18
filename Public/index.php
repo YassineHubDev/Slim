@@ -8,11 +8,12 @@ use Slim\App;
 // Config
 $config = require dirname(__DIR__) . '/config/config.php';
 
-
-
-
 //On crée l'app Slim
-$app = new App();
+$app = new App($config);
+
+// Récupération du conteneur
+require dirname(__DIR__) . '/config/container.php';
+// Récupération des routes
 
 require dirname(__DIR__) . '/config/route.php';
 
