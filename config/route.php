@@ -1,6 +1,8 @@
 <?php
 
+use App\Controller\AuthController;
 use App\Controller\APIController;
+use App\Controller\ConexController;
 use App\Controller\HomeController;
 use App\Controller\ProductController;
 
@@ -28,6 +30,10 @@ $app->group('/produit', function () {
     // todo : créer route et méthode de contrôleur
 });
 
+//Page de connexion
+$app->get('/inscription', AuthController::class . ':register');
+
+$app->get('/connexion', ConexController::class . ':connection');
 
 
 
