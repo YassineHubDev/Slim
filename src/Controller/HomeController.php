@@ -18,6 +18,4 @@ class HomeController extends AbstractController
     {
         return $this->twig->render($response, 'contact.twig');
     }
-
 }
-

@@ -15,7 +15,7 @@ $app->get('/contact', HomeController::class . ':contact');
 $app->get('/hamac', APIController::class . ':hamac');
 
 // Création d'un groupe de routes gérants les produits
-$app->group('/produit', function () {
+$app->group('/product', function () {
 
     // Page de la liste des produits
     $this->get('/liste', ProductController::class . ':liste');
@@ -34,16 +34,3 @@ $app->group('/produit', function () {
 $app->get('/inscription', AuthController::class . ':register');
 
 $app->get('/connexion', ConexController::class . ':connection');
-
-
-
-
-
-
-
-
-
-
-
-
-

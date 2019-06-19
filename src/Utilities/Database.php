@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Utilities;
+
 use PDO;
+
 /**
  * Cette classe utilise PDO afin d'effectuer des opérations sur la BDD
  */
@@ -11,29 +14,42 @@ class Database
      * @var PDO
      */
     private $pdo;
+
     /**
      * On crée un constructeur pour initialiser PDO automatiquement
+     * @param string $dbName
+     * @param string $dbUser
+     * @param string $dbPass
+     * @param string $dbHost
      */
-    public function __construct()
+    public function __construct(string $dbName, string $dbUser, string $dbHost, ?string $dbPass = null)
     {
-        $this->connect();
+        // Connexion à BDD
+        $this->connect($dbName, $dbUser, $dbHost, $dbPass);
     }
+
     /**
-     * Créer une instance de PDO
+     * Créer une instance de PDI et la stocker dans la classe
+     * @param string $dbName
+     * @param string $dbUser
+     * @param string $dbPass
+     * @param string $dbHost
      */
-    public function connect(): void
+
+    public function connect(string $dbName, string $dbUser, string $dbHost, ?string $dbPass): void
     {
-        // Connexion à MySQL
+
+        //Connexion à MySQL
         $this->pdo = new PDO(
-            'mysql:host=localhost;dbname=catalogue',
-            'root',
-            null,
+            'mysql:host=' . $dbHost . ';dbname=' . $dbName . ';charset=utf8mb4',
+            $dbUser,
+            $dbPass,
             [
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4",
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]
         );
     }
+
     /**
      * Exécute la requête SQL fournie et retourne un éventuel tableau
      * @param string $sql
@@ -45,8 +61,26 @@ class Database
         // Execution de la requête
         $result = $this->pdo->query($sql);
         // Récupération des résultats
-        return $result->fetchAll(PDO::FETCH_CLASS| PDO::FETCH_PROPS_LATE, $className);
+        return $result->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $className);
     }
+
+    /**
+     * Prépare et exécute une requête préparée (protection contre les injections SQL=
+     * @param string $sql - requête SQL
+     * @param array $params - paramètres de la requête SQL
+     * @param string|null $className - La classe servant à stocker les résultats
+     * @return array|null - Les données récupérées (ou rien du tout)
+     */
+    public function queryPrepared (string $sql, array $params, ?string $className = null): ?array
+    {
+        //Préparation de la reqête SQL
+        $statement = $this->pdo->prepare($sql);
+        //Exécution de ma requête SQL
+        $statement->execute($params);
+        //Retour des résultats
+        return $statement->fetchAll(PDO::FETCH_CLASS| PDO::FETCH_PROPS_LATE, $className);
+    }
+
     /**
      * Execute une requête SQL pour :
      * - La création (INSERT INTO)
